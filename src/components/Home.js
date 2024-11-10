@@ -16,9 +16,11 @@ function Home() {
                 setTelegramId(userId);  // Сохраняем полученный telegram_id в состояние
             } else {
                 console.error('Telegram ID не найден');
+                setIsLoading(false);  // Прекращаем загрузку, если ID не найден
             }
         } else {
             console.error('WebApp SDK не доступен');
+            setIsLoading(false);  // Прекращаем загрузку, если WebApp SDK не доступен
         }
     };
 
@@ -34,8 +36,10 @@ function Home() {
                     console.log('Данные пользователя:', response.data);  // Логируем ответ от сервера
                     setTRSG(response.data.tRSG_amount);
                     setBoost(response.data.farm_boots);
+                    setIsLoading(false);  // Данные получены, загрузка завершена
                 } catch (error) {
                     console.error('Ошибка при получении данных пользователя:', error);
+                    setIsLoading(false);  // В случае ошибки также завершать загрузку
                 }
             }
         };
@@ -43,7 +47,6 @@ function Home() {
         // Вызываем fetchUserData только если telegramId получен
         if (telegramId) {
             fetchUserData();
-            setIsLoading(false);  // Данные получены, загрузка завершена
         }
     }, [telegramId]);
 
