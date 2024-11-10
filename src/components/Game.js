@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Game.css';
 
 function Game() {
     const [btcPrice, setBtcPrice] = useState(null);
@@ -19,7 +20,6 @@ function Game() {
     }, []);
 
     const getTelegramId = () => {
-        // Реализуйте получение telegram_id из Web App или сохраните его в состоянии
         return 'USER_TELEGRAM_ID'; // Замените на реальный ID
     };
 
@@ -48,9 +48,17 @@ function Game() {
     };
 
     return (
-        <div>
+        <div className="game-container">
+            {/* Меню */}
+            <div className="menu">
+                <a href="/">Home</a>
+                <a href="/game">Game</a>
+                <a href="/boost">Boost</a>
+                <a href="/leaderboard">Leaderboard</a>
+            </div>
+
             <h1>Мини-игра: Угадай цену BTC</h1>
-            <p>Текущая цена BTC: {btcPrice ? `${btcPrice} USD` : 'Загрузка...'}</p>
+            <p className="btc-price">Текущая цена BTC: {btcPrice ? `${btcPrice} USD` : 'Загрузка...'}</p>
             <input
                 type="number"
                 placeholder="Ваше предположение о цене BTC"

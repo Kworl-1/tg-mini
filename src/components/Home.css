@@ -1,0 +1,73 @@
+/* Основные стили для контейнера */
+.container {
+    background-color: #333; /* Темно-серый фон */
+    color: white; /* Белый текст */
+    text-align: center;
+    padding: 50px 50px 30px 50px; /* Уменьшаем отступ сверху до 10px */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Стили для заголовка */
+  h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    margin-bottom: 20px; /* Уменьшаем отступ снизу */
+  }
+  
+  /* Меню */
+  .menu {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+  
+  .menu a {
+    text-decoration: none;
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+  }
+  
+  
+  /* Стилизация изображения */
+  .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .image {
+    width: 500px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .image.clicked {
+    transform: scale(0.9); /* Уменьшаем изображение при клике */
+  }
+  
+  .tRSG-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .tRSG-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    margin-right: 10px;
+  }
+  
+  .tRSG-icon {
+    width: 32px;
+    height: auto;
+    margin-left: 5px;
+    margin-top: 5px;
+  }
+  

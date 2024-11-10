@@ -1,0 +1,72 @@
+/* Основной контейнер игры */
+.game-container {
+    background-color: #333; /* Темно-серый фон */
+    color: white; /* Белый текст */
+    text-align: center;
+    padding: 60px; /* Добавили паддинг 60px */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрируем элементы по горизонтали */
+    font-family: 'JetBrains Mono', monospace; /* Шрифт */
+  }
+  
+  /* Заголовок */
+  h1 {
+    font-size: 36px;
+    margin-bottom: 10px; /* Уменьшили отступ между заголовком и меню */
+  }
+  
+  /* Цена BTC */
+  .btc-price {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Поле ввода */
+  input {
+    font-size: 18px;
+    padding: 10px;
+    margin: 10px 0;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Кнопка */
+  button {
+    background-color: #f0a500;
+    color: white;
+    font-size: 18px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  /* Сообщение об ошибке или успехе */
+  p {
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  
+  /* Меню */
+  .menu {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .menu a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+  }
+  
