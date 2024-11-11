@@ -5,11 +5,13 @@ import './Home.css';  // Импортируем стили
 function Home() {
   const [tRSG, setTRSG] = useState(0);
   const [boost, setBoost] = useState(1);
+  const [telegramId, setTelegramId] = useState(null);
 
   // Получение данных пользователя
   useEffect(() => {
     const fetchUserData = async () => {
-      const telegram_id = getTelegramId(); // Функция для получения telegram_id
+      const telegram_id = getTelegramId(); // Получаем telegram_id
+      if (!telegram_id) return; // Проверка на случай, если ID не доступен
       try {
         const response = await axios.get('http://localhost:3001/api/user', {
           params: { telegram_id }
@@ -21,35 +23,40 @@ function Home() {
       }
     };
     fetchUserData();
-  }, []);
+  }, [telegramId]);
 
   // Функция для получения telegram_id из Web App
   const getTelegramId = () => {
-    return 'USER_TELEGRAM_ID'; // Замените на реальный ID
+    if (window.Telegram && window.Telegram.WebApp.initDataUnsafe) {
+      const id = window.Telegram.WebApp.initDataUnsafe.user?.id;
+      if (id) {
+        setTelegramId(id);
+        return id;
+      }
+    }
+    return null;
   };
 
   // Обработчик клика на изображение stoney
   const handleImageClick = () => {
-    // Находим элемент изображения
     const imageElement = document.querySelector('.image');
-    
-    // Добавляем класс для анимации уменьшения размера
     imageElement.classList.add('clicked');
 
-    // После 300 мс (время анимации) удаляем класс, чтобы вернуть изображение в исходное состояние
     setTimeout(() => {
       imageElement.classList.remove('clicked');
     }, 100);
 
     // Обновление tRSG
     setTRSG(tRSG + boost);
-    const telegram_id = getTelegramId();
-    axios.post('http://localhost:3001/api/increment', {
-      telegram_id,
-      amount: boost
-    }).catch((error) => {
-      console.error('Ошибка при обновлении tRSG:', error);
-    });
+    const telegram_id = telegramId || getTelegramId(); // Используем сохраненный или получаемый ID
+    if (telegram_id) {
+      axios.post('http://localhost:3001/api/increment', {
+        telegram_id,
+        amount: boost
+      }).catch((error) => {
+        console.error('Ошибка при обновлении tRSG:', error);
+      });
+    }
   };
 
   return (
