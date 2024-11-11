@@ -36,6 +36,7 @@ function Home() {
       if (window.Telegram && window.Telegram.WebApp) {
         // Делаем это асинхронно
         const telegram_id = tg.initDataUnsafe.user.id;
+        Console.WriteLine(telegram_id)
         if (telegram_id) {
           resolve(telegram_id); // Возвращаем id пользователя
         } else {
