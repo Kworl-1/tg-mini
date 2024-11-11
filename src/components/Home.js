@@ -5,7 +5,7 @@ import './Home.css';  // Импортируем стили
 function Home() {
   const [tRSG, setTRSG] = useState(0);
   const [boost, setBoost] = useState(1);
-  let tg = window.Telegram.WebApp;
+
   // Получение данных пользователя
   useEffect(() => {
     const fetchUserData = async () => {
@@ -32,18 +32,19 @@ function Home() {
   // Функция для получения telegram_id из Web App
   const getTelegramId = async () => {
     return new Promise((resolve) => {
-      // Проверяем, что Telegram Web App был инициализирован
       if (window.Telegram && window.Telegram.WebApp) {
-        // Делаем это асинхронно
-        const telegram_id = tg.initDataUnsafe.user.id;
-        console.log(telegram_id)
-        if (telegram_id) {
-          resolve(telegram_id); // Возвращаем id пользователя
+        const user = window.Telegram.WebApp.initDataUnsafe?.user;
+        
+        // Проверяем наличие объекта user и его свойства id
+        if (user && user.id) {
+          resolve(user.id); // Возвращаем id пользователя
         } else {
-          resolve(null);  // Если id не найден, возвращаем null
+          console.warn('Не удалось получить user.id');
+          resolve(null);  // Если user или id не существует
         }
       } else {
-        resolve(null);  // Если Telegram не инициализирован, возвращаем null
+        console.warn('Telegram WebApp не инициализирован');
+        resolve(null);  // Если WebApp не инициализирован
       }
     });
   };
@@ -64,11 +65,17 @@ function Home() {
     // Обновление tRSG
     setTRSG(tRSG + boost);
     const telegram_id = getTelegramId();
-    axios.post('http://localhost:3001/api/increment', {
-      telegram_id,
-      amount: boost
-    }).catch((error) => {
-      console.error('Ошибка при обновлении tRSG:', error);
+    telegram_id.then(id => {
+      if (id) {
+        axios.post('http://localhost:3001/api/increment', {
+          telegram_id: id,
+          amount: boost
+        }).catch((error) => {
+          console.error('Ошибка при обновлении tRSG:', error);
+        });
+      } else {
+        console.warn('Не удалось получить telegram_id для обновления tRSG');
+      }
     });
   };
 
