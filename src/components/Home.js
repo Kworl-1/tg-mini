@@ -5,71 +5,46 @@ import './Home.css';  // Импортируем стили
 function Home() {
   const [tRSG, setTRSG] = useState(0);
   const [boost, setBoost] = useState(1);
-  const [telegramId, setTelegramId] = useState(null);
-
+  
   // Получение данных пользователя
   useEffect(() => {
-      const fetchUserData = async () => {
-          setTimeout(() => {
-              const telegram_id = getTelegramId();
-              if (telegram_id) {
-                  try {
-                      const response = await axios.get('http://localhost:3001/api/user', {
-                          params: { telegram_id }
-                      });
-                      setTRSG(response.data.tRSG_amount);
-                      setBoost(response.data.farm_boost);
-                  } catch (error) {
-                      console.error('Ошибка при получении данных пользователя:', error);
-                  }
-              } else {
-                  console.warn('Не удалось получить id пользователя. Проверьте, авторизован ли пользователь.');
-              }
-          }, 1000); // Задержка в 1 секунду
-      };
-  
-      fetchUserData();
+    const fetchUserData = async () => {
+      // Ждем, чтобы данные Telegram были загружены
+      const telegram_id = await getTelegramId();
+      if (telegram_id) {
+        try {
+          const response = await axios.get('http://localhost:3001/api/user', {
+            params: { telegram_id }
+          });
+          setTRSG(response.data.tRSG_amount);
+          setBoost(response.data.farm_boost);
+        } catch (error) {
+          console.error('Ошибка при получении данных пользователя:', error);
+        }
+      } else {
+        console.warn('Не удалось получить id пользователя. Проверьте, авторизован ли пользователь.');
+      }
+    };
+
+    fetchUserData();
   }, []);
 
-
   // Функция для получения telegram_id из Web App
-  const getTelegramId = () => {
-      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
-          const user = window.Telegram.WebApp.initDataUnsafe.user;
-          if (user && user.id) {
-              return user.id;
-          } else {
-              console.warn('Не удалось получить id пользователя. Проверьте, авторизован ли пользователь.');
-              return null; // Возвращаем null, если id не удалось получить
-          }
+  const getTelegramId = async () => {
+    return new Promise((resolve) => {
+      // Проверяем, что Telegram Web App был инициализирован
+      if (window.Telegram && window.Telegram.WebApp) {
+        // Делаем это асинхронно
+        const telegram_id = window.Telegram.WebApp.initDataUnsafe?.user?.id;
+        if (telegram_id) {
+          resolve(telegram_id);
+        } else {
+          resolve(null);  // Если id не найден, возвращаем null
+        }
       } else {
-          console.warn('Telegram WebApp SDK не инициализирован.');
-          return null; // Возвращаем null, если SDK Telegram не загружен
+        resolve(null);  // Если Telegram не инициализирован, возвращаем null
       }
-  };
-
-
-
-  // Обработчик клика на изображение stoney
-  const handleImageClick = () => {
-    const imageElement = document.querySelector('.image');
-    imageElement.classList.add('clicked');
-
-    setTimeout(() => {
-      imageElement.classList.remove('clicked');
-    }, 100);
-
-    // Обновление tRSG
-    setTRSG(tRSG + boost);
-    const telegram_id = telegramId || getTelegramId(); // Используем сохраненный или получаемый ID
-    if (telegram_id) {
-      axios.post('http://localhost:3001/api/increment', {
-        telegram_id,
-        amount: boost
-      }).catch((error) => {
-        console.error('Ошибка при обновлении tRSG:', error);
-      });
-    }
+    });
   };
 
   return (
