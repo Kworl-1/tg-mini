@@ -33,7 +33,7 @@ function Home() {
   const getTelegramId = async () => {
     return new Promise((resolve) => {
       if (window.Telegram && window.Telegram.WebApp) {
-        const user.innerText = window.Telegram.WebApp.initDataUnsafe.user.id;
+        const user.innerText = window.Telegram.WebApp.initDataUnsafe.user;
         
         // Проверяем наличие объекта user и его свойства id
         if (user && user.id) {
