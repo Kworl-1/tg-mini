@@ -9,21 +9,28 @@ function Home() {
 
   // Получение данных пользователя
   useEffect(() => {
-    const fetchUserData = async () => {
-      const telegram_id = getTelegramId(); // Получаем telegram_id
-      if (!telegram_id) return; // Проверка на случай, если ID не доступен
-      try {
-        const response = await axios.get('http://localhost:3001/api/user', {
-          params: { telegram_id }
-        });
-        setTRSG(response.data.tRSG_amount);
-        setBoost(response.data.farm_boost);
-      } catch (error) {
-        console.error('Ошибка при получении данных пользователя:', error);
-      }
-    };
-    fetchUserData();
-  }, [telegramId]);
+      const fetchUserData = async () => {
+          setTimeout(() => {
+              const telegram_id = getTelegramId();
+              if (telegram_id) {
+                  try {
+                      const response = await axios.get('http://localhost:3001/api/user', {
+                          params: { telegram_id }
+                      });
+                      setTRSG(response.data.tRSG_amount);
+                      setBoost(response.data.farm_boost);
+                  } catch (error) {
+                      console.error('Ошибка при получении данных пользователя:', error);
+                  }
+              } else {
+                  console.warn('Не удалось получить id пользователя. Проверьте, авторизован ли пользователь.');
+              }
+          }, 1000); // Задержка в 1 секунду
+      };
+  
+      fetchUserData();
+  }, []);
+
 
   // Функция для получения telegram_id из Web App
   const getTelegramId = () => {
