@@ -47,6 +47,30 @@ function Home() {
     });
   };
 
+  // Обработчик клика на изображение
+  const handleImageClick = () => {
+    // Находим элемент изображения
+    const imageElement = document.querySelector('.image');
+    
+    // Добавляем класс для анимации уменьшения размера
+    imageElement.classList.add('clicked');
+
+    // После 300 мс (время анимации) удаляем класс, чтобы вернуть изображение в исходное состояние
+    setTimeout(() => {
+      imageElement.classList.remove('clicked');
+    }, 100);
+
+    // Обновление tRSG
+    setTRSG(tRSG + boost);
+    const telegram_id = getTelegramId();
+    axios.post('http://localhost:3001/api/increment', {
+      telegram_id,
+      amount: boost
+    }).catch((error) => {
+      console.error('Ошибка при обновлении tRSG:', error);
+    });
+  };
+
   return (
     <div className="container">
       <h1>tRSG Farming</h1>
