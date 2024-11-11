@@ -27,15 +27,14 @@ function Home() {
 
   // Функция для получения telegram_id из Web App
   const getTelegramId = () => {
-    if (window.Telegram && window.Telegram.WebApp.initDataUnsafe) {
-      const id = window.Telegram.WebApp.initDataUnsafe.user?.id;
-      if (id) {
-        setTelegramId(id);
-        return id;
+      if (window.Telegram && window.Telegram.WebApp) {
+          return window.Telegram.WebApp.initDataUnsafe.user.id;
+      } else {
+          console.warn('Telegram WebApp не доступен');
+          return null;
       }
-    }
-    return null;
   };
+
 
   // Обработчик клика на изображение stoney
   const handleImageClick = () => {
