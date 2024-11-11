@@ -1,0 +1,81 @@
+/* Основной контейнер */
+.boost-container {
+    background-color: #333; /* Темно-серый фон всей страницы */
+    color: white;
+    text-align: center;
+    padding: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    min-height: 100vh;
+}
+
+/* Стили для меню навигации */
+.menu {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    background-color: transparent; /* Прозрачный фон для меню */
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 10px;
+    transition: color 0.3s;
+}
+
+.menu a:hover {
+    color: #f0a500;
+}
+
+/* Заголовок */
+.boost-container h1 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+/* Информация о текущем бусте и балансе */
+.boost-container p {
+    font-size: 16px;
+    margin: 8px 0;
+}
+
+/* Список бустов */
+.boost-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+/* Элементы списка бустов без серого фона */
+.boost-item {
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+}
+
+/* Кнопка покупки буста */
+.buy-button {
+    background-color: #f0a500; /* Оставляем выделяющийся цвет кнопки */
+    color: white;
+    font-size: 14px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background-color 0.3s;
+}
+
+.buy-button:disabled {
+    background-color: #888;
+    cursor: not-allowed;
+}
+
+.buy-button:hover:not(:disabled) {
+    background-color: #e89d00;
+}

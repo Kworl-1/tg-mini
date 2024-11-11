@@ -20,7 +20,7 @@
   .menu {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 15px;
     margin-bottom: 30px;
   }
   
@@ -28,7 +28,7 @@
     text-decoration: none;
     color: white;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 20px;
+    font-size: 5px;
   }
   
   
@@ -41,7 +41,7 @@
   }
   
   .image {
-    width: 500px;
+    width: 300px;
     height: auto;
     cursor: pointer;
     transition: transform 0.3s ease;

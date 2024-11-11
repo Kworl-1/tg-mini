@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Leaderboard.css';
 
 function Leaderboard() {
     const [leaderboard, setLeaderboard] = useState([]);
@@ -18,12 +19,18 @@ function Leaderboard() {
     }, []); // Данный эффект сработает только один раз при монтировании компонента
 
     return (
-        <div>
+        <div className="leaderboard-container">
+            <div className="menu">
+                <a href="/">Home</a>
+                <a href="/game">Game</a>
+                <a href="/boost">Boost</a>
+                <a href="/leaderboard">Leaderboard</a>
+            </div>
             <h2>Leaderboard</h2>
-            <ul>
+            <ul className="leaderboard-list">
                 {leaderboard.length > 0 ? (
                     leaderboard.map((user) => (
-                        <li key={user.telegram_id}>
+                        <li key={user.telegram_id} className="leaderboard-item">
                             <strong>{user.telegram_id}</strong>: {user.tRSG_amount} tRSG
                         </li>
                     ))

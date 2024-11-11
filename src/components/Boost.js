@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Boost.css';
 
 function Boost() {
     const [boosts, setBoosts] = useState([]);
@@ -35,7 +36,6 @@ function Boost() {
     }, []);
 
     const getTelegramId = () => {
-        // Реализуйте получение telegram_id из Web App или сохраните его в состоянии
         return 'USER_TELEGRAM_ID'; // Замените на реальный ID
     };
 
@@ -59,17 +59,27 @@ function Boost() {
     };
 
     return (
-        <div>
+        <div className="boost-container">
+            {/* Меню навигации */}
+            <div className="menu">
+                <a href="/">Home</a>
+                <a href="/game">Game</a>
+                <a href="/boost">Boost</a>
+                <a href="/leaderboard">Leaderboard</a>
+            </div>
+
+            {/* Основной контент */}
             <h1>Доступные бусты</h1>
             <p>Ваш текущий буст: {userBoost} (x{farmBoost})</p>
             <p>Ваш баланс tRSG: {tRSG}</p>
-            <ul>
+            <ul className="boost-list">
                 {boosts.map((boost) => (
-                    <li key={boost.id}>
+                    <li key={boost.id} className="boost-item">
                         {boost.boost_name} (Уровень {boost.boost_level}) - Множитель: x{boost.boost_multiplier} - Цена: {boost.boost_price} tRSG
                         <button
                             onClick={() => buyBoost(boost.id)}
                             disabled={tRSG < boost.boost_price}
+                            className="buy-button"
                         >
                             Купить
                         </button>

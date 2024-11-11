@@ -1,0 +1,51 @@
+/* Основной контейнер */
+.leaderboard-container {
+    background-color: #333; /* Темно-серый фон */
+    color: white;
+    text-align: center;
+    padding: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    min-height: 100vh;
+}
+
+/* Стили для меню навигации */
+.menu {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    background-color: transparent; /* Прозрачный фон для меню */
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 10px;
+    transition: color 0.3s;
+}
+
+.menu a:hover {
+    color: #f0a500;
+}
+
+/* Заголовок */
+.leaderboard-container h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+/* Список лидеров */
+.leaderboard-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+/* Элементы списка лидеров */
+.leaderboard-item {
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    background-color: transparent; /* Прозрачный фон для элементов */
+}
