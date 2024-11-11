@@ -5,25 +5,6 @@ import './Home.css';  // Импортируем стили
 function Home() {
   const [tRSG, setTRSG] = useState(0);
   const [boost, setBoost] = useState(1);
-  
-  const getTelegramId = async () => {
-    return new Promise((resolve) => {
-      if (window.Telegram && window.Telegram.WebApp) {
-        const user = window.Telegram.WebApp.initDataUnsafe?.user;
-        
-        // Проверяем наличие объекта user и его свойства id
-        if (user && user.id) {
-          resolve(user.id); // Возвращаем id пользователя
-        } else {
-          console.warn('Не удалось получить user.id');
-          resolve(null);  // Если user или id не существует
-        }
-      } else {
-        console.warn('Telegram WebApp не инициализирован');
-        resolve(null);  // Если WebApp не инициализирован
-      }
-    });
-  };
 
   // Получение данных пользователя
   useEffect(() => {
@@ -49,6 +30,24 @@ function Home() {
   }, []);
 
   // Функция для получения telegram_id из Web App
+  const getTelegramId = async () => {
+    return new Promise((resolve) => {
+      if (window.Telegram && window.Telegram.WebApp) {
+        const user = window.Telegram.WebApp.initDataUnsafe?.user;
+        
+        // Проверяем наличие объекта user и его свойства id
+        if (user && user.id) {
+          resolve(user.id); // Возвращаем id пользователя
+        } else {
+          console.warn('Не удалось получить user.id');
+          resolve(null);  // Если user или id не существует
+        }
+      } else {
+        console.warn('Telegram WebApp не инициализирован');
+        resolve(null);  // Если WebApp не инициализирован
+      }
+    });
+  };
 
   // Обработчик клика на изображение
   const handleImageClick = () => {
