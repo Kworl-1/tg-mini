@@ -9,7 +9,7 @@ function Home() {
   // Получение данных пользователя
   useEffect(() => {
     const fetchUserData = async () => {
-      // Ждем, чтобы данные Telegram были загружены
+      // Получаем telegram_id с использованием tg
       const telegram_id = await getTelegramId();
       if (telegram_id) {
         try {
@@ -33,11 +33,11 @@ function Home() {
   const getTelegramId = async () => {
     return new Promise((resolve) => {
       if (window.Telegram && window.Telegram.WebApp) {
-        const user.innerText = window.Telegram.WebApp.initDataUnsafe.user;
-        
-        // Проверяем наличие объекта user и его свойства id
-        if (user && user.id) {
-          resolve(user.id); // Возвращаем id пользователя
+        const tg = window.Telegram.WebApp;
+
+        // Проверяем наличие объекта initDataUnsafe и свойства user
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
+          resolve(tg.initDataUnsafe.user.id); // Возвращаем id пользователя
         } else {
           console.warn('Не удалось получить user.id');
           resolve(null);  // Если user или id не существует
