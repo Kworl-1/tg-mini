@@ -35,7 +35,7 @@ function Home() {
       // Проверяем, что Telegram Web App был инициализирован
       if (window.Telegram && window.Telegram.WebApp) {
         // Делаем это асинхронно
-        const telegram_id = window.Telegram.WebApp.initDataUnsafe.user.id;
+        const telegram_id = tg.initDataUnsafe.user.id;
         if (telegram_id) {
           resolve(telegram_id);
         } else {
