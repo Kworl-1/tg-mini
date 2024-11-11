@@ -5,11 +5,13 @@ import './Home.css';  // Импортируем стили
 function Home() {
   const [tRSG, setTRSG] = useState(0);
   const [boost, setBoost] = useState(1);
-
+  const tg = window.Telegram.WebApp;
   // Получение данных пользователя
   useEffect(() => {
+    tg.ready()
     const fetchUserData = async () => {
-      const telegram_id = await getTelegramId(); // Функция для получения telegram_id
+      // Ждем, чтобы данные Telegram были загружены
+      const telegram_id = await getTelegramId();
       if (telegram_id) {
         try {
           const response = await axios.get('http://localhost:3001/api/user', {
@@ -28,22 +30,20 @@ function Home() {
     fetchUserData();
   }, []);
 
-  // Функция для получения telegram_id из WebAppUser
+  // Функция для получения telegram_id из Web App
   const getTelegramId = async () => {
     return new Promise((resolve) => {
+      // Проверяем, что Telegram Web App был инициализирован
       if (window.Telegram && window.Telegram.WebApp) {
-        const tg = window.Telegram.WebApp;
-
-        // Проверяем, инициализирован ли WebApp и доступен ли объект user
-        if (tg.user && tg.user.id) {
-          resolve(tg.user.id); // Возвращаем id пользователя
+        // Делаем это асинхронно
+        const telegram_id = window.Telegram.WebApp.initDataUnsafe?.user?.id;
+        if (telegram_id) {
+          resolve(telegram_id);
         } else {
-          console.warn('Не удалось получить user.id');
-          resolve(null);  // Если user или id не существует
+          resolve(null);  // Если id не найден, возвращаем null
         }
       } else {
-        console.warn('Telegram WebApp не инициализирован');
-        resolve(null);  // Если WebApp не инициализирован
+        resolve(null);  // Если Telegram не инициализирован, возвращаем null
       }
     });
   };
@@ -64,17 +64,11 @@ function Home() {
     // Обновление tRSG
     setTRSG(tRSG + boost);
     const telegram_id = getTelegramId();
-    telegram_id.then(id => {
-      if (id) {
-        axios.post('http://localhost:3001/api/increment', {
-          telegram_id: id,
-          amount: boost
-        }).catch((error) => {
-          console.error('Ошибка при обновлении tRSG:', error);
-        });
-      } else {
-        console.warn('Не удалось получить telegram_id для обновления tRSG');
-      }
+    axios.post('http://localhost:3001/api/increment', {
+      telegram_id,
+      amount: boost
+    }).catch((error) => {
+      console.error('Ошибка при обновлении tRSG:', error);
     });
   };
 
