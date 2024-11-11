@@ -1,89 +1,77 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Home.css';  // Импортируем стили
+import './Home.css';
 
 function Home() {
   const [tRSG, setTRSG] = useState(0);
   const [boost, setBoost] = useState(1);
+  const [telegramId, setTelegramId] = useState(null); // Сохраняем ID в состоянии
   const tg = window.Telegram.WebApp;
-  // Получение данных пользователя
-  useEffect(() => {
-    tg.ready()
-    const fetchUserData = async () => {
-      // Ждем, чтобы данные Telegram были загружены
-      const telegram_id = await getTelegramId();
-      if (telegram_id) {
-        try {
-          const response = await axios.get('http://localhost:3001/api/user', {
-            params: { telegram_id }
-          });
-          setTRSG(response.data.tRSG_amount);
-          setBoost(response.data.farm_boost);
-        } catch (error) {
-          console.error('Ошибка при получении данных пользователя:', error);
-        }
-      } else {
-        console.warn('Не удалось получить id пользователя. Проверьте, авторизован ли пользователь.');
-      }
-    };
 
-    fetchUserData();
+  useEffect(() => {
+    tg.ready();
+    console.log("Telegram Web App Initialized");
+
+    // Добавим небольшую задержку для проверки загрузки данных Telegram
+    setTimeout(() => {
+      const initData = window.Telegram.WebApp.initDataUnsafe;
+      console.log("initData:", initData); // Отладка: проверяем initData
+
+      const telegram_id = initData?.user?.id;
+      if (telegram_id) {
+        setTelegramId(telegram_id); // Сохраняем ID в состоянии
+        fetchUserData(telegram_id);
+      } else {
+        console.warn("Не удалось получить ID пользователя.");
+      }
+    }, 500); // Задержка в 500 мс, чтобы убедиться, что данные успели загрузиться
   }, []);
 
-  // Функция для получения telegram_id из Web App
-  const getTelegramId = async () => {
-    return new Promise((resolve) => {
-      // Проверяем, что Telegram Web App был инициализирован
-      if (window.Telegram && window.Telegram.WebApp) {
-        // Делаем это асинхронно
-        const telegram_id = window.Telegram.WebApp.initDataUnsafe?.user?.id;
-        if (telegram_id) {
-          resolve(telegram_id);
-        } else {
-          resolve(null);  // Если id не найден, возвращаем null
-        }
-      } else {
-        resolve(null);  // Если Telegram не инициализирован, возвращаем null
-      }
-    });
+  const fetchUserData = async (telegram_id) => {
+    try {
+      const response = await axios.get('http://localhost:3001/api/user', {
+        params: { telegram_id }
+      });
+      setTRSG(response.data.tRSG_amount);
+      setBoost(response.data.farm_boost);
+    } catch (error) {
+      console.error('Ошибка при получении данных пользователя:', error);
+    }
   };
 
-  // Обработчик клика на изображение
   const handleImageClick = () => {
-    // Находим элемент изображения
     const imageElement = document.querySelector('.image');
-    
-    // Добавляем класс для анимации уменьшения размера
     imageElement.classList.add('clicked');
 
-    // После 300 мс (время анимации) удаляем класс, чтобы вернуть изображение в исходное состояние
     setTimeout(() => {
       imageElement.classList.remove('clicked');
     }, 100);
 
-    // Обновление tRSG
     setTRSG(tRSG + boost);
-    const telegram_id = getTelegramId();
-    axios.post('http://localhost:3001/api/increment', {
-      telegram_id,
-      amount: boost
-    }).catch((error) => {
-      console.error('Ошибка при обновлении tRSG:', error);
-    });
+
+    if (telegramId) {
+      axios.post('http://localhost:3001/api/increment', {
+        telegram_id: telegramId,
+        amount: boost
+      }).catch((error) => {
+        console.error('Ошибка при обновлении tRSG:', error);
+      });
+    } else {
+      console.error("Не удалось получить telegram_id.");
+    }
   };
 
   return (
     <div className="container">
       <h1>tRSG Farming</h1>
-      
-      {/* Стилизация меню через ссылки <a> */}
+
       <div className="menu">
         <a href="/">Home</a>
         <a href="/game">Game</a>
         <a href="/boost">Boost</a>
         <a href="/leaderboard">Leaderboard</a>
       </div>
-      
+
       <div className="image-container">
         <img
           src="stoney.png"
