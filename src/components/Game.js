@@ -6,6 +6,7 @@ function Game() {
     const [btcPrice, setBtcPrice] = useState(null);
     const [userGuess, setUserGuess] = useState('');
     const [message, setMessage] = useState('');
+    const [hasGuessed, setHasGuessed] = useState(false); // Флаг, проверяющий, сделал ли пользователь предположение
     const tg = window.Telegram.WebApp; // Используем объект Telegram WebApp для получения данных
 
     useEffect(() => {
@@ -18,6 +19,21 @@ function Game() {
             }
         };
         fetchBtcPrice();
+
+        const checkUserGuess = async () => {
+            const telegram_id = await getTelegramId();
+            try {
+                const response = await axios.get('http://localhost:3001/api/user', {
+                    params: { telegram_id }
+                });
+                if (response.data.btc_guess !== null) {
+                    setHasGuessed(true); // Если у пользователя есть предположение, меняем флаг
+                }
+            } catch (error) {
+                console.error('Ошибка при получении данных пользователя:', error);
+            }
+        };
+        checkUserGuess();
     }, []);
 
     // Функция для получения telegram_id из WebApp
@@ -40,6 +56,11 @@ function Game() {
         const telegram_id = await getTelegramId(); // Получаем telegram_id асинхронно
         const guess = parseFloat(userGuess);
         
+        if (hasGuessed) {
+            setMessage('Вы уже отправили предположение!');
+            return; // Если пользователь уже сделал предположение, не отправляем новое
+        }
+
         if (isNaN(guess)) {
             setMessage('Пожалуйста, введите корректное число.');
             return;
@@ -52,6 +73,7 @@ function Game() {
             });
             setMessage(response.data.message);
             setUserGuess('');
+            setHasGuessed(true); // Помечаем, что пользователь отправил предположение
         } catch (error) {
             if (error.response && error.response.data && error.response.data.error) {
                 setMessage(error.response.data.error);
@@ -78,8 +100,9 @@ function Game() {
                 placeholder="Ваше предположение о цене BTC"
                 value={userGuess}
                 onChange={(e) => setUserGuess(e.target.value)}
+                disabled={hasGuessed} // Блокируем поле ввода, если пользователь уже сделал предположение
             />
-            <button onClick={submitGuess}>Отправить предположение</button>
+            <button onClick={submitGuess} disabled={hasGuessed}>Отправить предположение</button>
             <p>{message}</p>
         </div>
     );
