@@ -5,7 +5,7 @@ import './Home.css';  // Импортируем стили
 function Home() {
   const [tRSG, setTRSG] = useState(0);
   const [boost, setBoost] = useState(1);
-  
+
   // Получение данных пользователя
   useEffect(() => {
     const fetchUserData = async () => {
@@ -35,9 +35,9 @@ function Home() {
       // Проверяем, что Telegram Web App был инициализирован
       if (window.Telegram && window.Telegram.WebApp) {
         // Делаем это асинхронно
-        const telegram_id = tg.initDataUnsafe.user.id;
+        const telegram_id = window.Telegram.WebApp.initDataUnsafe?.user?.id;
         if (telegram_id) {
-          resolve(telegram_id);
+          resolve(telegram_id); // Возвращаем id пользователя
         } else {
           resolve(null);  // Если id не найден, возвращаем null
         }
