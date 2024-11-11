@@ -19,6 +19,7 @@ function Game() {
         fetchBtcPrice();
     }, []);
 
+    // Функция получения telegram_id, как в Boost.js
     const getTelegramId = () => {
         return 'USER_TELEGRAM_ID'; // Замените на реальный ID
     };
