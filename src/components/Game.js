@@ -7,7 +7,6 @@ function Game() {
     const [userGuess, setUserGuess] = useState('');
     const [message, setMessage] = useState('');
     const [hasGuessed, setHasGuessed] = useState(false); // Флаг, проверяющий, сделал ли пользователь предположение
-    const tg = window.Telegram.WebApp; // Используем объект Telegram WebApp для получения данных
 
     useEffect(() => {
         const fetchBtcPrice = async () => {
@@ -40,11 +39,12 @@ function Game() {
     const getTelegramId = async () => {
         return new Promise((resolve) => {
             if (window.Telegram && window.Telegram.WebApp) {
+                // Для мобильного Telegram
                 const telegram_id = window.Telegram.WebApp.initDataUnsafe?.user?.id;
                 if (telegram_id) {
                     resolve(telegram_id);
                 } else {
-                    resolve(null);
+                    resolve(null); // если ID не найден
                 }
             } else {
                 resolve(null);
