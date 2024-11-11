@@ -7,8 +7,16 @@ function Boost() {
     const [userBoost, setUserBoost] = useState('');
     const [farmBoost, setFarmBoost] = useState(1);
     const [tRSG, setTRSG] = useState(0);
+    const tg = window.Telegram.WebApp;
+
+    // Функция для получения telegram_id пользователя
+    const getTelegramId = () => {
+        return tg.initDataUnsafe?.user?.id || null;
+    };
 
     useEffect(() => {
+        tg.ready();
+
         const fetchBoosts = async () => {
             try {
                 const response = await axios.get('http://localhost:3001/api/boosts');
@@ -21,40 +29,45 @@ function Boost() {
 
         const fetchUserData = async () => {
             const telegram_id = getTelegramId();
-            try {
-                const response = await axios.get('http://localhost:3001/api/user', {
-                    params: { telegram_id }
-                });
-                setUserBoost(response.data.user_boost);
-                setFarmBoost(response.data.farm_boost);
-                setTRSG(response.data.tRSG_amount);
-            } catch (error) {
-                console.error('Ошибка при получении данных пользователя:', error);
+            if (telegram_id) {
+                try {
+                    const response = await axios.get('http://localhost:3001/api/user', {
+                        params: { telegram_id }
+                    });
+                    setUserBoost(response.data.user_boost);
+                    setFarmBoost(response.data.farm_boost);
+                    setTRSG(response.data.tRSG_amount);
+                } catch (error) {
+                    console.error('Ошибка при получении данных пользователя:', error);
+                }
+            } else {
+                console.warn("Не удалось получить ID пользователя Telegram.");
             }
         };
         fetchUserData();
     }, []);
 
-    const getTelegramId = () => {
-        return 'USER_TELEGRAM_ID'; // Замените на реальный ID
-    };
-
+    // Функция для покупки буста
     const buyBoost = async (boostId) => {
         const telegram_id = getTelegramId();
-        try {
-            const response = await axios.post('http://localhost:3001/api/buy-boost', {
-                telegram_id,
-                boost_id: boostId
-            });
-            setUserBoost(response.data.user_boost);
-            setFarmBoost(response.data.farm_boost);
-            setTRSG(response.data.tRSG_amount);
-        } catch (error) {
-            if (error.response && error.response.data && error.response.data.error) {
-                alert(error.response.data.error);
-            } else {
-                console.error('Ошибка при покупке буста:', error);
+        if (telegram_id) {
+            try {
+                const response = await axios.post('http://localhost:3001/api/buy-boost', {
+                    telegram_id,
+                    boost_id: boostId
+                });
+                setUserBoost(response.data.user_boost);
+                setFarmBoost(response.data.farm_boost);
+                setTRSG(response.data.tRSG_amount);
+            } catch (error) {
+                if (error.response && error.response.data && error.response.data.error) {
+                    alert(error.response.data.error);
+                } else {
+                    console.error('Ошибка при покупке буста:', error);
+                }
             }
+        } else {
+            console.error("Не удалось получить ID пользователя Telegram.");
         }
     };
 
