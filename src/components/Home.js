@@ -27,13 +27,20 @@ function Home() {
 
   // Функция для получения telegram_id из Web App
   const getTelegramId = () => {
-      if (window.Telegram && window.Telegram.WebApp) {
-          return window.Telegram.WebApp.initDataUnsafe.user.id;
+      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+          const user = window.Telegram.WebApp.initDataUnsafe.user;
+          if (user && user.id) {
+              return user.id;
+          } else {
+              console.warn('Не удалось получить id пользователя. Проверьте, авторизован ли пользователь.');
+              return null; // Возвращаем null, если id не удалось получить
+          }
       } else {
-          console.warn('Telegram WebApp не доступен');
-          return null;
+          console.warn('Telegram WebApp SDK не инициализирован.');
+          return null; // Возвращаем null, если SDK Telegram не загружен
       }
   };
+
 
 
   // Обработчик клика на изображение stoney
