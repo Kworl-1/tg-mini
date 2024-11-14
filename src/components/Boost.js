@@ -19,7 +19,7 @@ function Boost() {
 
         const fetchBoosts = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/boosts');
+                const response = await axios.get('http://burro-distinct-implicitly.ngrok-free.app/api/boosts');
                 setBoosts(response.data);
             } catch (error) {
                 console.error('Ошибка при получении бустов:', error);
@@ -31,7 +31,7 @@ function Boost() {
             const telegram_id = getTelegramId();
             if (telegram_id) {
                 try {
-                    const response = await axios.get('http://localhost:3001/api/user', {
+                    const response = await axios.get('http://burro-distinct-implicitly.ngrok-free.app/api/user', {
                         params: { telegram_id }
                     });
                     setUserBoost(response.data.user_boost);
@@ -53,7 +53,7 @@ function Boost() {
     if (telegram_id) {
         try {
             // Запрос на покупку буста
-            const response = await axios.post('http://localhost:3001/api/buy-boost', {
+            const response = await axios.post('http://burro-distinct-implicitly.ngrok-free.app/api/buy-boost', {
                 telegram_id,
                 boost_id: boostId
             });
