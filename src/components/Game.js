@@ -29,9 +29,15 @@ function Game() {
         const checkUserGuess = async () => {
             const telegram_id = await getTelegramId();
             try {
-                const response = await axios.get('http://burro-distinct-implicitly.ngrok-free.app/api/user', {
-                    params: { telegram_id }
-                });
+                const response = await axios.get(
+                    'https://burro-distinct-implicitly.ngrok-free.app/api/user',
+                    {
+                        params: { telegram_id },
+                        headers: {
+                            'ngrok-skip-browser-warning': 'true' // Добавляем нужный заголовок
+                        }
+                    }
+                );
                 if (response.data.btc_guess !== null) {
                     setHasGuessed(true); // Если у пользователя есть предположение, меняем флаг
                 }
