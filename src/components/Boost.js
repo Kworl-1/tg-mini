@@ -40,7 +40,6 @@ function Boost() {
                         headers: {
                             'ngrok-skip-browser-warning': 'true'
                         }
-                        });
                     });
                     setUserBoost(response.data.user_boost);
                     setFarmBoost(response.data.farm_boost);
@@ -52,8 +51,9 @@ function Boost() {
                 console.warn("Не удалось получить ID пользователя Telegram.");
             }
         };
+        
         fetchUserData();
-    }, []);
+
 
     // Функция для покупки буста
     const buyBoost = async (boostId) => {
