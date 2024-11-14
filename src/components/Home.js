@@ -29,7 +29,7 @@ function Home() {
 
   const fetchUserData = async (telegram_id) => {
     try {
-      const response = await axios.get('https://3e40-150-241-107-221.ngrok-free.app/api/user', {
+      const response = await axios.get('https://burro-distinct-implicitly.ngrok-free.app/api/user', {
         params: { telegram_id }
       });
       setTRSG(response.data.tRSG_amount);
@@ -50,7 +50,7 @@ function Home() {
     setTRSG(tRSG + boost);
 
     if (telegramId) {
-      axios.post('https://3e40-150-241-107-221.ngrok-free.app/api/increment', {
+      axios.post('https://burro-distinct-implicitly.ngrok-free.app/api/increment', {
         telegram_id: telegramId,
         amount: boost
       }).catch((error) => {
