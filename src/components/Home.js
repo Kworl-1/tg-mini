@@ -27,17 +27,20 @@ function Home() {
     }, 500); // Задержка в 500 мс, чтобы убедиться, что данные успели загрузиться
   }, []);
 
-  const fetchUserData = async (telegram_id) => {
+const fetchUserData = async (telegram_id) => {
     try {
       const response = await axios.get('https://burro-distinct-implicitly.ngrok-free.app/api/user', {
-        params: { telegram_id }
+        params: { telegram_id },
+        headers: {
+          'ngrok-skip-browser-warning': 'true',  // Добавляем заголовок
+        }
       });
       setTRSG(response.data.tRSG_amount);
       setBoost(response.data.farm_boost);
     } catch (error) {
       console.error('Ошибка при получении данных пользователя:', error);
     }
-  };
+};
 
   const handleImageClick = () => {
     const imageElement = document.querySelector('.image');
