@@ -40,7 +40,7 @@ function Boost() {
                         headers: {
                             'ngrok-skip-browser-warning': 'true'
                         }
-                    });
+                        });
                     });
                     setUserBoost(response.data.user_boost);
                     setFarmBoost(response.data.farm_boost);
