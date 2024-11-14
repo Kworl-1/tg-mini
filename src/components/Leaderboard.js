@@ -9,7 +9,7 @@ function Leaderboard() {
         // Функция для получения данных с leaderboard
         const fetchLeaderboard = async () => {
             try {
-                const response = await axios.get('http://burro-distinct-implicitly.ngrok-free.appapi/leaderboard');
+                const response = await axios.get('http://burro-distinct-implicitly.ngrok-free.app/api/leaderboard');
                 setLeaderboard(response.data); // Сохраняем данные в состояние
             } catch (error) {
                 console.error('Ошибка при получении leaderboard:', error);
