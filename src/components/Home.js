@@ -42,7 +42,7 @@ const fetchUserData = async (telegram_id) => {
     }
 };
 
-  const handleImageClick = () => {
+const handleImageClick = () => {
     const imageElement = document.querySelector('.image');
     imageElement.classList.add('clicked');
 
@@ -53,16 +53,25 @@ const fetchUserData = async (telegram_id) => {
     setTRSG(tRSG + boost);
 
     if (telegramId) {
-      axios.post('https://burro-distinct-implicitly.ngrok-free.app/api/increment', {
-        telegram_id: telegramId,
-        amount: boost
-      }).catch((error) => {
+      axios.post(
+        'https://burro-distinct-implicitly.ngrok-free.app/api/increment', 
+        {
+          telegram_id: telegramId,
+          amount: boost
+        },
+        {
+          headers: {
+            'ngrok-skip-browser-warning': 'true'  // Добавляем заголовок
+          }
+        }
+      ).catch((error) => {
         console.error('Ошибка при обновлении tRSG:', error);
       });
     } else {
       console.error("Не удалось получить telegram_id.");
     }
-  };
+};
+
 
   return (
     <div className="container">
