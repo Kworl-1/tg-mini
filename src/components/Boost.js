@@ -19,7 +19,11 @@ function Boost() {
 
         const fetchBoosts = async () => {
             try {
-                const response = await axios.get('https://burro-distinct-implicitly.ngrok-free.app/api/boosts');
+                const response = await axios.get('https://burro-distinct-implicitly.ngrok-free.app/api/boosts', {
+                    headers: {
+                        'ngrok-skip-browser-warning': 'true'
+                    }
+                });
                 setBoosts(response.data);
             } catch (error) {
                 console.error('Ошибка при получении бустов:', error);
@@ -32,7 +36,11 @@ function Boost() {
             if (telegram_id) {
                 try {
                     const response = await axios.get('https://burro-distinct-implicitly.ngrok-free.app/api/user', {
-                        params: { telegram_id }
+                        params: { telegram_id },
+                        headers: {
+                            'ngrok-skip-browser-warning': 'true'
+                        }
+                    });
                     });
                     setUserBoost(response.data.user_boost);
                     setFarmBoost(response.data.farm_boost);
