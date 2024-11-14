@@ -53,37 +53,37 @@ function Boost() {
         };
         
         fetchUserData();
-
+    }, []); // Здесь закрываем useEffect
 
     // Функция для покупки буста
     const buyBoost = async (boostId) => {
-    const telegram_id = getTelegramId();
-    if (telegram_id) {
-        try {
-            // Запрос на покупку буста
-            const response = await axios.post('https://burro-distinct-implicitly.ngrok-free.app/api/buy-boost', {
-                telegram_id,
-                boost_id: boostId
-            });
-            
-            // Получение обновленных данных пользователя
-            const updatedUserData = response.data;
-            
-            // Сложение текущего множителя с новым
-            setUserBoost(updatedUserData.user_boost);
-            setFarmBoost(prevFarmBoost => prevFarmBoost + updatedUserData.boost_multiplier); // добавляем новый множитель
-            setTRSG(updatedUserData.tRSG_amount);
-        } catch (error) {
-            if (error.response && error.response.data && error.response.data.error) {
-                alert(error.response.data.error);
-            } else {
-                console.error('Ошибка при покупке буста:', error);
+        const telegram_id = getTelegramId();
+        if (telegram_id) {
+            try {
+                // Запрос на покупку буста
+                const response = await axios.post('https://burro-distinct-implicitly.ngrok-free.app/api/buy-boost', {
+                    telegram_id,
+                    boost_id: boostId
+                });
+                
+                // Получение обновленных данных пользователя
+                const updatedUserData = response.data;
+                
+                // Сложение текущего множителя с новым
+                setUserBoost(updatedUserData.user_boost);
+                setFarmBoost(prevFarmBoost => prevFarmBoost + updatedUserData.boost_multiplier); // добавляем новый множитель
+                setTRSG(updatedUserData.tRSG_amount);
+            } catch (error) {
+                if (error.response && error.response.data && error.response.data.error) {
+                    alert(error.response.data.error);
+                } else {
+                    console.error('Ошибка при покупке буста:', error);
+                }
             }
+        } else {
+            console.error("Не удалось получить ID пользователя Telegram.");
         }
-    } else {
-        console.error("Не удалось получить ID пользователя Telegram.");
-    }
-};
+    };
 
     return (
         <div className="boost-container">
