@@ -11,7 +11,7 @@ function Game() {
     useEffect(() => {
         const fetchBtcPrice = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/get-btc-price');
+                const response = await axios.get('http://burro-distinct-implicitly.ngrok-free.app/api/get-btc-price');
                 setBtcPrice(response.data.btcPrice);
             } catch (error) {
                 console.error('Ошибка при получении цены BTC:', error);
@@ -22,7 +22,7 @@ function Game() {
         const checkUserGuess = async () => {
             const telegram_id = await getTelegramId();
             try {
-                const response = await axios.get('http://localhost:3001/api/user', {
+                const response = await axios.get('http://burro-distinct-implicitly.ngrok-free.app/api/user', {
                     params: { telegram_id }
                 });
                 if (response.data.btc_guess !== null) {
@@ -67,7 +67,7 @@ function Game() {
         }
 
         try {
-            const response = await axios.post('http://localhost:3001/api/set-btc-guess', {
+            const response = await axios.post('http://burro-distinct-implicitly.ngrok-free.app/api/set-btc-guess', {
                 telegram_id,
                 btc_guess: guess
             });
