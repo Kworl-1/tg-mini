@@ -80,7 +80,7 @@ function Game() {
         }
 
         try {
-            const response = await axios.post('http://burro-distinct-implicitly.ngrok-free.app/api/set-btc-guess', {
+            const response = await axios.post('https://burro-distinct-implicitly.ngrok-free.app/api/set-btc-guess', {
                 telegram_id,
                 btc_guess: guess
             });
