@@ -107,7 +107,7 @@ function Game() {
             </div>
 
             <h1>Mini-game: Guess BTC price</h1>
-            <p className="btc-price">Current BTC price: {btcPrice ? `${btcPrice} USD` : 'Загрузка...'}</p>
+            <p className="btc-price">Current BTC price: {btcPrice ? `${btcPrice} USD` : 'Loading...'}</p>
             <input
                 type="number"
                 placeholder="Your BTC price assumption"
