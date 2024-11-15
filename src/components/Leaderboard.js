@@ -42,7 +42,7 @@ function Leaderboard() {
                         </li>
                     ))
                 ) : (
-                    <p>Загрузка лидеров...</p>
+                    <p>Loading Leaders ...</p>
                 )}
             </ul>
         </div>
