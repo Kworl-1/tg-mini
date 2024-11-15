@@ -106,16 +106,16 @@ function Game() {
                 <a href="/leaderboard">Leaderboard</a>
             </div>
 
-            <h1>Мини-игра: Угадай цену BTC</h1>
-            <p className="btc-price">Текущая цена BTC: {btcPrice ? `${btcPrice} USD` : 'Загрузка...'}</p>
+            <h1>Mini-game: Guess BTC price</h1>
+            <p className="btc-price">Current BTC price: {btcPrice ? `${btcPrice} USD` : 'Загрузка...'}</p>
             <input
                 type="number"
-                placeholder="Ваше предположение о цене BTC"
+                placeholder="Your BTC price assumption"
                 value={userGuess}
                 onChange={(e) => setUserGuess(e.target.value)}
                 disabled={hasGuessed} // Блокируем поле ввода, если пользователь уже сделал предположение
             />
-            <button onClick={submitGuess} disabled={hasGuessed}>Отправить предположение</button>
+            <button onClick={submitGuess} disabled={hasGuessed}>Send a guess</button>
             <p>{message}</p>
         </div>
     );
