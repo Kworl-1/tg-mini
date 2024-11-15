@@ -5,27 +5,26 @@ import './Home.css';
 function Home() {
   const [tRSG, setTRSG] = useState(0);
   const [boost, setBoost] = useState(1);
-  const [telegramId, setTelegramId] = useState(null); // Сохраняем ID в состоянии
-  const [canClick, setCanClick] = useState(true); // Новое состояние для отслеживания возможности клика
+  const [telegramId, setTelegramId] = useState(null); // Store Telegram ID in state
   const tg = window.Telegram.WebApp;
 
   useEffect(() => {
     tg.ready();
     console.log("Telegram Web App Initialized");
 
-    // Добавим небольшую задержку для проверки загрузки данных Telegram
+    // Add a slight delay to ensure Telegram data is loaded
     setTimeout(() => {
       const initData = window.Telegram.WebApp.initDataUnsafe;
-      console.log("initData:", initData); // Отладка: проверяем initData
+      console.log("initData:", initData); // Debug: check initData
 
       const telegram_id = initData?.user?.id;
       if (telegram_id) {
-        setTelegramId(telegram_id); // Сохраняем ID в состоянии
+        setTelegramId(telegram_id); // Store Telegram ID in state
         fetchUserData(telegram_id);
       } else {
-        console.warn("Не удалось получить ID пользователя.");
+        console.warn("Unable to retrieve user ID.");
       }
-    }, 500); // Задержка в 500 мс, чтобы убедиться, что данные успели загрузиться
+    }, 500); // 500ms delay to ensure data is loaded
   }, []);
 
   const fetchUserData = async (telegram_id) => {
@@ -33,24 +32,21 @@ function Home() {
       const response = await axios.get('https://burro-distinct-implicitly.ngrok-free.app/api/user', {
         params: { telegram_id },
         headers: {
-          'ngrok-skip-browser-warning': 'true',  // Добавляем заголовок
+          'ngrok-skip-browser-warning': 'true', // Add header
         }
       });
       setTRSG(response.data.tRSG_amount);
       setBoost(response.data.farm_boost);
-      // Если tRSG больше или равно 25000, запрещаем кликать
-      if (response.data.tRSG_amount >= 25000) {
-        setCanClick(false);
-      }
     } catch (error) {
-      console.error('Ошибка при получении данных пользователя:', error);
+      console.error('Error fetching user data:', error);
     }
   };
 
   const handleImageClick = () => {
-    // Если кликать нельзя, выходим из функции
-    if (!canClick) {
-      return;
+    if (tRSG >= 25000) {
+      console.warn("The tRSG limit has been reached. Clicks are no longer counted.");
+      tg.showAlert("You have reached the tRSG limit!");
+      return; // Stop execution if the limit is reached
     }
 
     const imageElement = document.querySelector('.image');
@@ -60,25 +56,26 @@ function Home() {
       imageElement.classList.remove('clicked');
     }, 100);
 
+    // Increment tRSG
     setTRSG(tRSG + boost);
 
     if (telegramId) {
       axios.post(
-        'https://burro-distinct-implicitly.ngrok-free.app/api/increment', 
+        'https://burro-distinct-implicitly.ngrok-free.app/api/increment',
         {
           telegram_id: telegramId,
           amount: boost
         },
         {
           headers: {
-            'ngrok-skip-browser-warning': 'true'  // Добавляем заголовок
+            'ngrok-skip-browser-warning': 'true' // Add header
           }
         }
       ).catch((error) => {
-        console.error('Ошибка при обновлении tRSG:', error);
+        console.error('Error updating tRSG:', error);
       });
     } else {
-      console.error("Не удалось получить telegram_id.");
+      console.error("Unable to retrieve telegram_id.");
     }
   };
 
@@ -97,7 +94,7 @@ function Home() {
         <img
           src="stoney.png"
           alt="Stoney"
-          className={`image ${canClick ? '' : 'disabled'}`} // Добавляем класс disabled, если нельзя кликать
+          className="image"
           onClick={handleImageClick}
         />
         <div className="tRSG-container">
@@ -105,8 +102,6 @@ function Home() {
           <img src="rsg.png" alt="RSG Icon" className="tRSG-icon" />
         </div>
       </div>
-
-      {!canClick && <p>Вы достигли лимита tRSG и больше не можете кликать!</p>}
     </div>
   );
 }
