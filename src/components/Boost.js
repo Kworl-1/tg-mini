@@ -108,7 +108,7 @@ function Boost() {
                             disabled={tRSG < boost.boost_price}
                             className="buy-button"
                         >
-                            Купить
+                            Buy
                         </button>
                     </li>
                 ))}
