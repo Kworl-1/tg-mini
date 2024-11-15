@@ -70,4 +70,10 @@
     margin-left: 5px;
     margin-top: 5px;
   }
+
+.image.disabled {
+  opacity: 0.5;  /* Полупрозрачность для неактивного изображения */
+  pointer-events: none;  /* Отключаем обработку кликов */
+}
+
   
