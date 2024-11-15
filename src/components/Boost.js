@@ -96,13 +96,13 @@ function Boost() {
             </div>
 
             {/* Основной контент */}
-            <h1>Доступные бусты</h1>
-            <p>Ваш текущий буст: {userBoost} (x{farmBoost})</p>
-            <p>Ваш баланс tRSG: {tRSG}</p>
+            <h1>Available boosts</h1>
+            <p>Your current boost: {userBoost} (x{farmBoost})</p>
+            <p>Balance tRSG: {tRSG}</p>
             <ul className="boost-list">
                 {boosts.map((boost) => (
                     <li key={boost.id} className="boost-item">
-                        {boost.boost_name} (Уровень {boost.boost_level}) - Множитель: x{boost.boost_multiplier} - Цена: {boost.boost_price} tRSG
+                        {boost.boost_name} (Tier {boost.boost_level}) - Multiplier: x{boost.boost_multiplier} - Price: {boost.boost_price} tRSG
                         <button
                             onClick={() => buyBoost(boost.id)}
                             disabled={tRSG < boost.boost_price}
